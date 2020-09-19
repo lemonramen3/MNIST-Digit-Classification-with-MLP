@@ -47,14 +47,16 @@ class Sigmoid(Layer):
 
     def forward(self, input):
         # TODO START
+        # Reference: https://blog.csdn.net/qq_33200967/article/details/79759284
         '''Your codes here'''
-        pass
+        self._saved_for_backward(1./(1. + np.exp(-input)))
+        return self._saved_tensor
         # TODO END
 
     def backward(self, grad_output):
         # TODO START
         '''Your codes here'''
-        pass
+        return grad_output * self._saved_tensor * (1 - self._saved_tensor)
         # TODO END
 
 class Gelu(Layer):
