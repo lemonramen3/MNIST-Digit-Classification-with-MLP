@@ -18,7 +18,8 @@ model.add(Relu('a2'))
 
 
 # loss = EuclideanLoss(name='loss')
-loss = SoftmaxCrossEntropyLoss(name='loss')
+# loss = SoftmaxCrossEntropyLoss(name='loss')
+loss = HingeLoss(name='loss')
 # Training configuration
 # You should adjust these hyperparameters
 # NOTE: one iteration means model forward-backwards one batch of samples.

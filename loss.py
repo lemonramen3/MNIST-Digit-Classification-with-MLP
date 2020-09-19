@@ -53,12 +53,18 @@ class HingeLoss(object):
     def forward(self, input, target):
         # TODO START
         '''Your codes here'''
-        pass
+        delta = 5.
+        x_t = np.max(np.where(target == 1, input, 0.), axis=1, keepdims=True)
+        # print(x_t.shape)
+        a = np.array(np.maximum(0., delta - x_t + input))
+        h = np.where(input == 1, 0., a)
+        # print(np.sum(h))
+        return np.sum(h) / input.shape[0]
         # TODO END
 
     def backward(self, input, target):
         # TODO START
         '''Your codes here'''
-        pass
+        return (input-target) / input.shape[0]
         # TODO END
 
