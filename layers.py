@@ -29,13 +29,16 @@ class Relu(Layer):
     def forward(self, input):
         # TODO START
         '''Your codes here'''
-        pass
+        self._saved_for_backward(input)
+        return np.maximum(0, input)
+
         # TODO END
 
     def backward(self, grad_output):
         # TODO START
         '''Your codes here'''
-        pass
+        grad_output[self._saved_tensor <= 0] = 0
+        return grad_output
         # TODO END
 
 class Sigmoid(Layer):
@@ -55,16 +58,16 @@ class Sigmoid(Layer):
         # TODO END
 
 class Gelu(Layer):
-	def __init__(self, name):
-		super(Gelu, self).__init__(name)
+    def __init__(self, name):
+        super(Gelu, self).__init__(name)
 
-	def forward(self, input):
+    def forward(self, input):
         # TODO START
         '''Your codes here'''
         pass
         # TODO END
 
-	def backward(self, grad_output):
+    def backward(self, grad_output):
         # TODO START
         '''Your codes here'''
         pass
@@ -87,13 +90,18 @@ class Linear(Layer):
     def forward(self, input):
         # TODO START
         '''Your codes here'''
-        pass
+        self._saved_for_backward(input)
+        # print(input.shape)
+        return input.dot(self.W) + self.b
         # TODO END
 
     def backward(self, grad_output):
         # TODO START
         '''Your codes here'''
-        pass
+        self.grad_W = self._saved_tensor.T.dot(grad_output)  # (in_num, out_num)
+        self.grad_b = grad_output.sum(axis=0)
+        # print(grad_output.shape)# (100,10)
+        return grad_output.dot(self.W.T)
         # TODO END
 
     def update(self, config):
@@ -103,6 +111,6 @@ class Linear(Layer):
 
         self.diff_W = mm * self.diff_W + (self.grad_W + wd * self.W)
         self.W = self.W - lr * self.diff_W
-
+        # print(lr* self.diff_W)
         self.diff_b = mm * self.diff_b + (self.grad_b + wd * self.b)
         self.b = self.b - lr * self.diff_b
