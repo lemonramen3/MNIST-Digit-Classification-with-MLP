@@ -22,7 +22,7 @@ class EuclideanLoss(object):
 
     def backward(self, input, target):
         '''Your codes here'''
-        return (input - target)/input.shape[0]
+        return (input - target) / input.shape[0]
 
 
 class SoftmaxCrossEntropyLoss(object):
@@ -32,13 +32,17 @@ class SoftmaxCrossEntropyLoss(object):
     def forward(self, input, target):
         # TODO START
         '''Your codes here'''
-        pass
+        # input: (batch_size, 10) target: (batch_size, 10)
+        h = np.exp(input) / np.sum(np.exp(input), axis=1, keepdims=True)  # (batch_size, 10)
+        E = -np.sum(target * np.log(h), axis=1, keepdims=True)  # (100, 1)
+        return np.sum(E) / input.shape[0]
         # TODO END
 
     def backward(self, input, target):
         # TODO START
+        # Reference: https://blog.csdn.net/weixin_43846347/article/details/94363273
         '''Your codes here'''
-        pass
+        return (input - target) / input.shape[0]
         # TODO END
 
 

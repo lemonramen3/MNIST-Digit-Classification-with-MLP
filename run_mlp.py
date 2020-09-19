@@ -12,13 +12,13 @@ train_data, test_data, train_label, test_label = load_mnist_2d('data')
 # You should explore different model architecture
 model = Network()
 model.add(Linear('fc1', 784, 256, 0.01))
-model.add(Gelu('a1'))
+model.add(Relu('a1'))
 model.add(Linear('fc2', 256, 10, 0.01))
-model.add(Gelu('a2'))
+model.add(Relu('a2'))
 
 
-loss = EuclideanLoss(name='loss')
-
+# loss = EuclideanLoss(name='loss')
+loss = SoftmaxCrossEntropyLoss(name='loss')
 # Training configuration
 # You should adjust these hyperparameters
 # NOTE: one iteration means model forward-backwards one batch of samples.
