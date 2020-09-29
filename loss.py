@@ -21,8 +21,10 @@ class EuclideanLoss(object):
         # TODO END
 
     def backward(self, input, target):
+        # TODO STSRT
         '''Your codes here'''
         return (input - target) / input.shape[0]
+        # TODO END
 
 
 class SoftmaxCrossEntropyLoss(object):
@@ -55,16 +57,20 @@ class HingeLoss(object):
         '''Your codes here'''
         delta = 5.
         x_t = np.max(np.where(target == 1, input, 0.), axis=1, keepdims=True)
-        # print(x_t.shape)
         a = np.array(np.maximum(0., delta - x_t + input))
         h = np.where(input == 1, 0., a)
-        # print(np.sum(h))
+        self.saved_tensor = h
         return np.sum(h) / input.shape[0]
         # TODO END
 
     def backward(self, input, target):
         # TODO START
         '''Your codes here'''
-        return (input-target) / input.shape[0]
+        h = self.saved_tensor
+        filter= np.where(h > 0, 1, 0)
+        # Counter for max(0, delta-x_tn+x_k)>0
+        counter = np.sum(filter, axis=1, keepdims=True)
+        grad_x_tn = np.zeros(h.shape) - counter
+        return np.where(target == 1, grad_x_tn, filter)/input.shape[0]
         # TODO END
 
