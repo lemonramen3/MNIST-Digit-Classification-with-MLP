@@ -18,6 +18,7 @@ def train_net(model, loss, config, inputs, labels, batch_size, disp_freq):
     acc_list = []
     #added
     loss_history = []
+    acc_history = []
 
     for input, label in data_iterator(inputs, labels, batch_size):
         target = onehot_encoding(label, 10)
@@ -43,16 +44,20 @@ def train_net(model, loss, config, inputs, labels, batch_size, disp_freq):
             msg = '  Training iter %d, batch loss %.4f, batch acc %.4f' % (iter_counter, np.mean(loss_list), np.mean(acc_list))
             # added
             loss_history.append(np.mean(loss_list))
+            acc_history.append(np.mean(acc_list))
             loss_list = []
             acc_list = []
             LOG_INFO(msg)
-    return loss_history
+    # added
+    return loss_history, acc_history
 
 
 def test_net(model, loss, inputs, labels, batch_size):
     loss_list = []
     acc_list = []
-
+    # added
+    # loss_history = []
+    # acc_history = []
     for input, label in data_iterator(inputs, labels, batch_size, shuffle=False):
         target = onehot_encoding(label, 10)
         output = model.forward(input)
@@ -60,6 +65,11 @@ def test_net(model, loss, inputs, labels, batch_size):
         acc_value = calculate_acc(output, label)
         loss_list.append(loss_value)
         acc_list.append(acc_value)
+        # added
+        # loss_history.append(loss_value)
+        # acc_history.append(acc_value)
 
     msg = '    Testing, total mean loss %.5f, total acc %.5f' % (np.mean(loss_list), np.mean(acc_list))
     LOG_INFO(msg)
+    # added
+    return np.mean(loss_list), np.mean(acc_list)
