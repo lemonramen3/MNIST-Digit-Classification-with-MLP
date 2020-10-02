@@ -42,7 +42,6 @@ class SoftmaxCrossEntropyLoss(object):
 
     def backward(self, input, target):
         # TODO START
-        # Reference: https://blog.csdn.net/weixin_43846347/article/details/94363273
         '''Your codes here'''
         return (input - target) / input.shape[0]
         # TODO END
@@ -55,16 +54,17 @@ class HingeLoss(object):
     def forward(self, input, target):
         # TODO START
         '''Your codes here'''
-        delta = 5.
+        delta = 1.5
         x_t = np.max(np.where(target == 1, input, 0.), axis=1, keepdims=True)
         a = np.array(np.maximum(0., delta - x_t + input))
-        h = np.where(input == 1, 0., a)
+        h = np.where(target == 1, 0., a)
         self.saved_tensor = h
         return np.sum(h) / input.shape[0]
         # TODO END
 
     def backward(self, input, target):
         # TODO START
+        # Reference: Guidance from TA in WeChat group
         '''Your codes here'''
         h = self.saved_tensor
         filter= np.where(h > 0, 1, 0)

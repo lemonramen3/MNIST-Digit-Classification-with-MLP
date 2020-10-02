@@ -74,7 +74,6 @@ class Gelu(Layer):
 
     def backward(self, grad_output):
         # TODO START
-        # Reference: https://blog.csdn.net/zandaoguang/article/details/103659304
         '''Your codes here'''
         input = self._saved_tensor
         tmp = 0.0356774 * input ** 3 + 0.797885 * input

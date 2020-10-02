@@ -21,7 +21,7 @@ train_data, test_data, train_label, test_label = load_mnist_2d('data')
 #       'disp_freq' denotes number of iterations in one epoch to display information.
 
 config = {
-    'learning_rate': 1e-2,
+    'learning_rate': 40e-3,
     'weight_decay': 1e-5,
     'momentum': 0.9,
     'batch_size': 100,
@@ -37,7 +37,7 @@ def plot_func(pos, target_list, title, xlabel, ylabel, name_list):
     plt.sca(ax)
     for target, model_name in zip(target_list, name_list):
         plt.plot(target, label=model_name)
-    plt.legend(loc=4, fontsize='xx-small', framealpha=0.3)
+    plt.legend(loc=5, fontsize='xx-small', framealpha=0.3)
     plt.title(title)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
@@ -74,7 +74,7 @@ for name, model, loss in models.model_list:
     acc_test_list.append(acc_history_test)
     name_list.append(name)
     time_list.append(time.time() - start_time)
-plt.figure(figsize=(18, 16))
+plt.figure(figsize=(26, 18))
 plot_func(321, loss_training_list, 'Loss on Training Set', 'Every {} Iterations'.format(config['disp_freq']), 'Loss', name_list)
 plot_func(322, acc_training_list, 'Accuracy on Training Set', 'Every {} Iterations'.format(config['disp_freq']),
           'Accuracy', name_list)
@@ -82,8 +82,8 @@ plot_func(323, loss_test_list, 'Loss on Test Set', 'Epoch', 'Loss', name_list)
 plot_func(324, acc_test_list, 'Accuracy on Test Set', 'Epoch', 'Accuracy', name_list)
 ax_time = plt.subplot(325)
 plt.sca(ax_time)
-plt.bar(name_list, time_list, width=0.3)
+plt.bar(name_list, time_list, width=0.1)
 plt.ylabel('Run Time (s)')
 plt.title('Run Time Comparison')
-plt.savefig('./plots/EuclideanLoss.png')
+plt.savefig('./plots/HingeLoss2.png')
 plt.show()
